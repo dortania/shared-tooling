@@ -1,6 +1,9 @@
 name: Build/Test/Deploy
 on:
   workflow_call:
+    secrets:
+      ACCESS_TOKEN:
+        required: true
 
 jobs:
   build:
@@ -20,7 +23,7 @@ jobs:
         run: npm run build
       - name: Deploy
         uses: JamesIves/github-pages-deploy-action@v4.4.0
-        if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master'}}
+        if: ${{ github.event_name == 'push' && (github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main') }}
         with:
           token: ${{ secrets.ACCESS_TOKEN }}
           folder: .vuepress/dist/
